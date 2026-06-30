@@ -1,0 +1,239 @@
+/* ========================================
+   合成大西瓜 - 样式表
+   移动端优先，适配所有屏幕尺寸
+   ======================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 阻止移动端默认行为 */
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    touch-action: manipulation;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    background: #1a1a2e;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+#game-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh; /* 动态视口高度（移动端浏览器地址栏适配） */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+#game-canvas {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* ========================================
+   操作提示
+   ======================================== */
+#hint-text {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.7);
+    pointer-events: none;
+    z-index: 5;
+    text-align: center;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    transition: opacity 0.5s ease;
+    animation: hintPulse 2s ease-in-out infinite;
+}
+
+@keyframes hintPulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+}
+
+/* ========================================
+   分数显示
+   ======================================== */
+#score-display {
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.45);
+    padding: 6px 20px;
+    border-radius: 20px;
+    pointer-events: none;
+    z-index: 10;
+    letter-spacing: 1px;
+}
+
+/* 关卡和剩余次数 */
+#level-display {
+    position: absolute;
+    top: 18px;
+    left: 16px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #FFD700;
+    background: rgba(0, 0, 0, 0.45);
+    padding: 4px 12px;
+    border-radius: 14px;
+    pointer-events: none;
+    z-index: 10;
+}
+
+#drops-display {
+    position: absolute;
+    top: 44px;
+    left: 16px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.8);
+    background: rgba(0, 0, 0, 0.35);
+    padding: 3px 10px;
+    border-radius: 10px;
+    pointer-events: none;
+    z-index: 10;
+}
+
+/* ========================================
+   下一个水果预览
+   ======================================== */
+#next-fruit-preview {
+    position: absolute;
+    top: 70px;
+    right: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    pointer-events: none;
+    z-index: 10;
+}
+
+#next-fruit-label {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+#preview-canvas {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+}
+
+/* 静音按钮 */
+#mute-btn {
+    position: absolute;
+    top: 70px;
+    left: 12px;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: none;
+    transition: background 0.2s;
+}
+#mute-btn:active {
+    transform: scale(0.9);
+    box-shadow: none;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* ========================================
+   覆盖层（开始 / 结束界面）
+   ======================================== */
+.overlay-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    height: 100dvh;
+    background: rgba(26, 26, 46, 0.92);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    backdrop-filter: blur(4px);
+    transition: opacity 0.3s ease;
+}
+
+.overlay-screen.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.overlay-content {
+    text-align: center;
+    color: #fff;
+    padding: 40px 32px;
+    max-width: 360px;
+}
+
+.overlay-content h1 {
+    font-size: 36px;
+    margin-bottom: 16px;
+}
+
+.overlay-content p {
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.8;
+    margin-bottom: 24px;
+}
+
+/* 最终得分大字 */
+.big-score {
+    font-size: 56px !important;
+    font-weight: bold;
+    color: #FFD700 !important;
+    margin: 8px 0 24px !important;
+}
+
+/* ========================================
+   按钮
+   ======================================== */
+button {
+    font-size: 18px;
+    font-weight: bold;
+    padding: 14px 48px;
+    border: none;
+    border-radius: 30px;
+    background: linear-gradient(135deg, #FF6B6B, #FF4500);
+    color: #fff;
+    cursor: pointer;
+    letter-spacing: 2px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    box-shadow: 0 4px 16px rgba(255, 69, 0, 0.35);
+    -webkit-tap-highlight-color: transparent;
+}
+
+button:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 8px rgba(255, 69, 0, 0.25);
+}

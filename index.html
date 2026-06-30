@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>🍉 合成大西瓜</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="game-canvas"></canvas>
+        <!-- UI 叠加层 -->
+        <div id="score-display">🍉 <span id="score">0</span></div>
+        <!-- 关卡信息 -->
+        <div id="level-display">第 <span id="level-num">1</span> 关</div>
+        <div id="drops-display">剩余 <span id="drops-count">16</span> 次</div>
+        <div id="next-fruit-preview">
+            <span id="next-fruit-label">下一个</span>
+            <canvas id="preview-canvas" width="60" height="60"></canvas>
+        </div>
+        <!-- 静音按钮 -->
+        <button id="mute-btn" title="音效开关">🔊</button>
+        <!-- 操作提示 -->
+        <div id="hint-text">👆 点击上方区域投下水果</div>
+    </div>
+
+    <!-- 加载失败提示 -->
+    <div id="load-error" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);color:red;text-align:center;z-index:200;background:#1a1a2e;padding:30px;border-radius:12px;">
+        <p>⚠️ 游戏引擎加载失败</p>
+        <p style="font-size:14px;color:#aaa;">请检查网络连接后刷新页面</p>
+    </div>
+
+    <!-- 开始界面 -->
+    <div id="start-screen" class="overlay-screen">
+        <div class="overlay-content">
+            <h1>🍉 合成大西瓜</h1>
+            <p>在顶部区域点击/触摸来丢下水果<br>相同水果碰到一起会合成更大的！</p>
+            <button id="start-btn">开始游戏</button>
+        </div>
+    </div>
+
+    <!-- 结束界面 -->
+    <div id="gameover-screen" class="overlay-screen hidden">
+        <div class="overlay-content">
+            <h1>💥 游戏结束</h1>
+            <p>最终得分</p>
+            <p id="final-score" class="big-score">0</p>
+            <button id="restart-btn">再来一局</button>
+        </div>
+    </div>
+
+    <!-- 胜利界面 -->
+    <div id="win-screen" class="overlay-screen hidden">
+        <div class="overlay-content">
+            <h1>🎉 恭喜过关！</h1>
+            <p>第 <span id="win-level">1</span> 关 通过</p>
+            <p id="win-score" class="big-score">0</p>
+            <button id="next-level-btn">下一关</button>
+        </div>
+    </div>
+
+    <!-- Matter.js 物理引擎（双 CDN 容灾） -->
+    <script src="https://cdn.jsdelivr.net/npm/matter-js@0.19.0/build/matter.min.js"
+            onerror="this.onerror=null;this.src='https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js';">
+    </script>
+    <script>
+    // 检测 Matter.js 是否加载
+    window.addEventListener('load', function() {
+        if (typeof Matter === 'undefined') {
+            document.getElementById('load-error').style.display = 'block';
+            document.getElementById('start-screen').style.display = 'none';
+        }
+    });
+    </script>
+
+    <!-- 游戏脚本（按依赖顺序加载） -->
+    <script src="js/config.js"></script>
+    <script src="js/physics.js"></script>
+    <script src="js/fruit.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/effects.js"></script>
+    <script src="js/input.js"></script>
+    <script src="js/renderer.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
